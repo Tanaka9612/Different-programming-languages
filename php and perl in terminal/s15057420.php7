@@ -1,0 +1,49 @@
+<?php
+
+// Check if filename and search word are provided as command-line arguments
+if ($argc < 3) {
+    echo "Usage: php s15057420.php7 <filename> <search_word>\n";
+    exit(1);
+}
+
+// Get the filename and search word from command-line arguments
+$filename = $argv[1];
+$searchWord = $argv[2];
+
+$searchWord = $searchWord;
+$searchWord_r = strrev($searchWord);
+$count = 0;
+// Open the file for reading
+$file = fopen($filename, 'r') or die("Unable to open file!");
+
+// Read the entire file content into a single string
+$content = fread($file, filesize($filename));
+
+// Close the file handle
+fclose($file);
+
+// Remove white spaces and punctuation from the content
+$content = preg_replace('/\s+/', '', $content); // Remove white spaces
+$content = preg_replace('/[[:punct:]]/', '', $content); // Remove punctuation
+$content = preg_replace('/\d+/', '', $content ); //remove numbers
+$content = strtolower($content); // make lower case
+
+echo "\n";
+echo $content; //printout the string
+echo "\n\n";
+// Search for the provided word in the modified content
+
+// $pos = strlen($content);
+
+// while (($pos = strripos($content, $searchWord_r, $pos - strlen($searchWord))) !== false) {
+//     $count++;
+// }
+
+//this method works but searches left to right!
+if (preg_match_all('/' . preg_quote($searchWord_r, '/') . '/', $content, $matches)) {
+    $count = count($matches[0]);
+}
+
+echo "Matches: $count \n\n";
+
+?>
